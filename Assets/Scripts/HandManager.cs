@@ -7,24 +7,32 @@ public class HandManager : MonoBehaviour
 
     Rigidbody2D handPhysics;
     public Transform[] targets;
-    //public float speed = 0.001f;
-    public float minDistance = 0.0001f;
+    public float speed = 1f;
+    public float minDistance = 0.05f;
+
+    Transform hilt;
+
 
     // Start is called before the first frame update
     void Start()
     {
         handPhysics = GetComponent<Rigidbody2D>();
+        hilt = transform.Find("Hilt");
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 target = GetClosestTarget(targets).position;
+        Transform target = GetClosestTarget(targets);
         Vector3 hand = transform.transform.position;
-        Vector3 targetDirection = (target - hand).normalized;
+        Vector3 targetDirection = (target.position - hand).normalized;
 
-        if (Vector3.Distance(target, hand) > minDistance)
-            transform.position = Vector2.MoveTowards(hand, targetDirection, 0.01f);
+        if (Vector3.Distance(target.position, hand) > minDistance)
+        {
+            transform.position = Vector2.MoveTowards(hand, targetDirection, speed * Time.deltaTime);
+            //hilt.localEulerAngles = target.localEulerAngles;
+            hilt.rotation = target.rotation;
+        }
     }
 
     private void FixedUpdate()
