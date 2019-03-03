@@ -17,7 +17,6 @@ public class HandManager : MonoBehaviour
     void Start()
     {
         handPhysics = GetComponent<Rigidbody2D>();
-        hilt = transform.Find("Hilt");
     }
 
     // Update is called once per frame
@@ -30,8 +29,6 @@ public class HandManager : MonoBehaviour
         if (Vector3.Distance(target.position, hand) > minDistance)
         {
             transform.position = Vector2.MoveTowards(hand, targetDirection, speed * Time.deltaTime);
-            //hilt.localEulerAngles = target.localEulerAngles;
-            hilt.rotation = target.rotation;
         }
     }
 
