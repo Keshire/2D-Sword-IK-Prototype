@@ -26,21 +26,20 @@ public class PlayerMovementController : MonoBehaviour
         vertical = Input.GetAxisRaw("Vertical"); // -1 is down
 
         m = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 target = (transform.position-m).normalized;
-        float angle = Mathf.Atan2(m.x, m.y) * Mathf.Rad2Deg;
+        Vector3 target = m-transform.position;
+        float angle = (Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg) + 90;
+        //turn slightly slower from front
         if (Vector3.Dot(transform.up, target) < 0f)
         {
-            //float angle = Mathf.Atan2(m.x, m.y) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, -angle), turnSpeed);
-            //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, -angle), turnSpeed);
+            transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.AngleAxis(angle, Vector3.forward), turnSpeed * 0.5f);
         }
         else
         {
-            //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed);
+            transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.AngleAxis(angle, Vector3.forward), turnSpeed);
         }
+            
 
-        
-        
+
     }
 
     void FixedUpdate()
